@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peak &amp; Progress</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- PWA manifest and theme color -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#2f855a" />
+    <link rel="icon" type="image/png" href="icon.png" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Authentication container -->
+      <div id="auth" class="card">
+        <!-- Login form -->
+        <div id="loginContainer">
+          <h2>Login</h2>
+          <form id="loginForm">
+            <input
+              type="text"
+              id="loginUsername"
+              placeholder="Username"
+              required
+            />
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Password"
+              required
+            />
+            <button type="submit">Login</button>
+          </form>
+          <p>
+            Don’t have an account?
+            <a href="#" id="showSignup">Sign up</a>
+          </p>
+        </div>
+        <!-- Signup form -->
+        <div id="signupContainer" style="display: none">
+          <h2>Sign Up</h2>
+          <form id="signupForm">
+            <input
+              type="text"
+              id="signupUsername"
+              placeholder="Username"
+              required
+            />
+            <input
+              type="password"
+              id="signupPassword"
+              placeholder="Password"
+              required
+            />
+            <button type="submit">Sign Up</button>
+          </form>
+          <p>
+            Already have an account?
+            <a href="#" id="showLogin">Login</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Main application -->
+      <div id="main" style="display: none">
+        <!-- Header with logo and navigation -->
+        <header>
+          <div class="logo-title">
+            <img src="icon.png" alt="Peak &amp; Progress logo" class="app-logo" />
+            <h1>Peak &amp; Progress</h1>
+          </div>
+          <nav class="navbar">
+            <button class="nav-link active" data-page="home">Home</button>
+            <button class="nav-link" data-page="history">History</button>
+            <button class="nav-link" data-page="progress">Progress</button>
+            <button class="nav-link" data-page="account">Account</button>
+          </nav>
+          <button id="logoutBtn" class="secondary">Logout</button>
+        </header>
+
+        <!-- Home page: log form and recent sessions -->
+        <div id="homePage" class="page">
+          <section id="logSection" class="card">
+            <h2>Log a Climb</h2>
+            <form id="climbForm">
+              <div class="form-row">
+                <label for="climbType">Climb Type</label>
+                <select id="climbType" required>
+                  <option value="boulder">Boulder</option>
+                  <option value="top-rope">Top Rope</option>
+                  <option value="lead">Lead</option>
+                  <option value="trad">Trad</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="climbGrade">Grade</label>
+                <select id="climbGrade" required></select>
+              </div>
+              <div class="form-row">
+                <label for="climbAttempts">Attempts</label>
+                <input type="number" id="climbAttempts" min="1" value="1" required />
+              </div>
+              <div class="form-row">
+                <label for="climbDate">Date</label>
+                <input type="date" id="climbDate" required />
+              </div>
+              <div class="form-row">
+                <label for="climbLocation">Location</label>
+                <div class="location-controls">
+                  <select id="climbLocation"></select>
+                  <button type="button" id="addLocationBtn" class="secondary small">
+                    Add New
+                  </button>
+                </div>
+                <div id="newLocationFields" style="display: none" class="location-new">
+                  <input type="text" id="newLocationInput" placeholder="New location name" />
+                  <button type="button" id="saveLocationBtn" class="secondary small">Save</button>
+                </div>
+              </div>
+              <div class="form-row">
+                <label for="climbNotes">Notes</label>
+                <textarea id="climbNotes" rows="2" placeholder="Optional"></textarea>
+              </div>
+              <button type="submit" class="primary">Log Climb</button>
+            </form>
+          </section>
+          <section id="recentSection" class="card">
+            <h2>Recent Sessions</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Grade</th>
+                  <th>Attempts</th>
+                  <th>Location</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="recentTableBody"></tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- History page: full climb history -->
+        <div id="historyPage" class="page" style="display: none">
+          <section id="historySection" class="card">
+            <h2>Climb History</h2>
+            <table id="climbTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Grade</th>
+                  <th>Attempts</th>
+                  <th>Location</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="climbTableBody"></tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- Progress page: metrics and charts -->
+        <div id="progressPage" class="page" style="display: none">
+          <section id="metricsSection" class="card">
+            <h2>Key Metrics</h2>
+            <div id="metricsContainer" class="metrics-grid"></div>
+          </section>
+          <section id="chartSection" class="card">
+            <h2>Progress Charts</h2>
+            <h3>Climbs per Day by Type</h3>
+            <canvas id="progressChart"></canvas>
+            <h3>Average Grade Over Time</h3>
+            <canvas id="averageGradeChart"></canvas>
+            <h3>Hardest Grade Over Time</h3>
+            <canvas id="hardestGradeChart"></canvas>
+            <h3>Climb Type Distribution</h3>
+            <canvas id="distributionChart"></canvas>
+            <h3>Average Climbs per Session (Boulder vs Ropes)</h3>
+            <canvas id="averageClimbsChart"></canvas>
+          </section>
+        </div>
+
+        <!-- Account page: user info and settings -->
+        <div id="accountPage" class="page" style="display: none">
+          <section class="card">
+            <h2>Account Settings</h2>
+            <p><strong>Username:</strong> <span id="accountUsername"></span></p>
+            <h3>Saved Locations</h3>
+            <ul id="locationList" class="location-list"></ul>
+            <p>Default Location: <span id="defaultLocationDisplay">None</span></p>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+    <!-- Register service worker for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('sw.js').catch(function (error) {
+            console.error('Service worker registration failed:', error);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
