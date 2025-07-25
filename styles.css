@@ -78,6 +78,30 @@ header {
   color: var(--color-secondary);
 }
 
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--color-background);
+  border-top: 1px solid #ccc;
+  padding: 0.5rem 0;
+  z-index: 1000;
+}
+.nav-link {
+  flex-grow: 1;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 1rem;
+  text-align: center;
+}
+.page {
+  padding-bottom: 4rem; /* prevent content being hidden behind nav */
+}
+
+
 /* Page containers */
 .page {
   display: none;
